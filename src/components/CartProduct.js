@@ -1,8 +1,11 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { incrementCartValue, decrementCartValue } from "../redux/actions/Index";
 
 const CartProduct = () => {
-  const cartData = useSelector((state) => state.Product.cartList);
+  const dispatch = useDispatch();
+  const cartData = useSelector((state) => state.Product.cart);
+  const cartList = useSelector((state) => state.Product.cartValue);
   const amount = useSelector((state) => state.Product.amount);
   const navigate = useNavigate();
   return (
@@ -15,7 +18,7 @@ const CartProduct = () => {
           paddingRight: "20px",
         }}
       >
-        <button className="btn btn-primary">Cart = {cartData.length}</button>
+        <button className="btn btn-primary">Cart = {cartList}</button>
         <button className="btn btn-primary">Total Amount = {amount}</button>
         <button className="btn btn-primary" onClick={() => navigate("/")}>
           Back
@@ -41,8 +44,21 @@ const CartProduct = () => {
                   <td>{data.product}</td>
                   <td>{data.price}</td>
                   <td>
-                    <button className="btn btn-primary">-</button> {data.count}{" "}
-                    <button className="btn btn-primary">+</button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        dispatch(decrementCartValue(data));
+                      }}
+                    >
+                      -
+                    </button>{" "}
+                    {data.count}{" "}
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => dispatch(incrementCartValue(data))}
+                    >
+                      +
+                    </button>
                   </td>
                 </tr>
               );

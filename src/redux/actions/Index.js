@@ -1,14 +1,14 @@
-export const addProduct = (productData) => {
+export const addProduct = (data) => {
   return {
     type: "ADD_PRODUCT",
-    productData,
+    data,
   };
 };
 
-export const removeProduct = (id) => {
+export const removeProduct = (data) => {
   return {
     type: "REMOVE_PRODUCT",
-    id,
+    data,
   };
 };
 
@@ -16,5 +16,19 @@ export const addToCart = (cartdata) => {
   return {
     type: "CART_PRODUCT",
     cartdata,
+  };
+};
+
+export const incrementCartValue = (data) => {
+  return {
+    type: "INCREMENT_CART",
+    data,
+  };
+};
+
+export const decrementCartValue = (data) => {
+  return {
+    type: "DECREMENT_CART",
+    data,
   };
 };

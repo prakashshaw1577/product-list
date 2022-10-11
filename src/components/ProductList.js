@@ -46,7 +46,7 @@ const ProductList = () => {
                 <td>
                   <button
                     className="btn btn-primary"
-                    onClick={() => dispatch(removeProduct(data.id))}
+                    onClick={() => dispatch(removeProduct(data))}
                   >
                     Remove
                   </button>

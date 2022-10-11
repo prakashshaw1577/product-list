@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const cart = useSelector((state) => state.Product.cartList);
+  const cart = useSelector((state) => state.Product.cartValue);
   const navigate = useNavigate();
   return (
     <div>
@@ -18,7 +18,7 @@ const Header = () => {
         <button
           className="btn btn-primary"
           onClick={() => navigate("/cartproduct")}
-        >{`Cart ${cart.length}`}</button>
+        >{`Cart ${cart}`}</button>
       </nav>
     </div>
   );

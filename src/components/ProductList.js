@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeProduct, addToCart } from "../redux/actions/Index";
+import { searchProduct } from "../redux/actions/Index";
 
 const ProductList = () => {
+  // const [list, setList] = useState([]);
   const productData = useSelector((state) => state.Product.productList);
+  // const searchProductList = useSelector((state) => state.Product.serachProduct);
   const dispatch = useDispatch();
   return (
     <div className="container mt-5">
@@ -12,7 +15,16 @@ const ProductList = () => {
           <tr>
             <th>Sr No.</th>
             <th>Name</th>
-            <th>Product</th>
+            <th className="text-center" style={{ width: "20%" }}>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Product Search"
+                onChange={(e) => {
+                  dispatch(searchProduct(e.target.value));
+                }}
+              />
+            </th>
             <th>Price</th>
             <th>Add To Cart</th>
             <th>Delete</th>
@@ -24,7 +36,7 @@ const ProductList = () => {
               <tr key={i}>
                 <td>{i + 1}</td>
                 <td>{data.name}</td>
-                <td>{data.product}</td>
+                <td className="text-center">{data.product}</td>
                 <td>{data.price}</td>
                 <td>
                   <button

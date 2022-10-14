@@ -1,6 +1,7 @@
 const initialValue = {
   productList: [],
-  cartList: [],
+  // cartList: [],
+  serachProduct: [],
   cart: [],
   cartValue: 0,
   amount: 0,
@@ -12,34 +13,38 @@ const Product = (state = initialValue, action) => {
       return {
         ...state,
         productList: [...state.productList, action.data],
+        serachProduct: [...state.productList, action.data],
       };
 
     case "REMOVE_PRODUCT":
-      const newAmount = state.cart.filter((data) => data.id === action.data.id);
+      const currentCartData = state.cart.filter(
+        (data) => data.id === action.data.id
+      );
       const newProductList = state.productList.filter(
         (data) => data.id !== action.data.id
       );
 
-      const newCartList = state.cartList.filter(
-        (data) => data.id !== action.data.id
-      );
+      // const newCartList = state.cartList.filter(
+      //   (data) => data.id !== action.data.id
+      // );
 
       const newCart = state.cart.filter((data) => data.id !== action.data.id);
 
-      // console.log(state.cartValue, "oooo", newAmount[0].count);
-
       let amountValue = state.amount;
+
       if (amountValue > 0) {
-        amountValue = Number(
-          state.amount - newAmount[0].count * newAmount[0].price
-        );
+        amountValue = amountValue - parseInt(currentCartData[0].price);
       }
-      let removeCart = state.cartValue > 0 && state.amount - newAmount[0].count;
+
+      let removeCart = state.cartValue;
+      if (state.cartValue > 0) {
+        removeCart = state.cartValue - currentCartData[0].count;
+      }
 
       return {
         ...state,
         productList: newProductList,
-        cartList: newCartList,
+        // cartList: newCartList,
         cart: newCart,
         cartValue: removeCart,
         amount: amountValue,
@@ -89,6 +94,10 @@ const Product = (state = initialValue, action) => {
         (item) => item.id === action.data.id
       );
 
+      // state.cart.filter((item) => item.id === action.data.id).indexOf()
+
+      // console.log(index);
+
       const incNewvalue = state.cart.filter(
         (item) => item.id !== action.data.id
       );
@@ -106,7 +115,6 @@ const Product = (state = initialValue, action) => {
       };
 
       incNewvalue.push(arrlist);
-      console.log(incNewvalue);
       const increaseCart = state.cartValue + 1;
       return {
         ...state,
@@ -129,14 +137,18 @@ const Product = (state = initialValue, action) => {
       const decNewvalue = state.cart.filter(
         (item) => item.id !== action.data.id
       );
-      const decCountValue = Number(
-        action.data.count > 0 && action.data.count - 1
-      );
-      const decTotalAmountValue = Number(
-        state.amount > 0 && state.amount - localPrice
-      );
+
+      const decCart = state.cart.filter((item) => item.id === action.data.id);
+
+      let decreaseCart = state.cartValue;
+      let decCountValue = action.data.count;
+      let decTotalAmountValue = state.amount;
       let curtPrice = newTotalPrice;
-      if (newTotalPrice > 0) {
+
+      if (state.cartValue > 1 && decCart[0].count > 1) {
+        decreaseCart = state.cartValue - 1;
+        decCountValue = action.data.count - 1;
+        decTotalAmountValue = state.amount - localPrice;
         curtPrice -= localPrice;
       }
 
@@ -148,12 +160,32 @@ const Product = (state = initialValue, action) => {
 
       decNewvalue.push(arrlists);
       console.log(decNewvalue);
-      const decreaseCart = state.cartValue - 1;
+
       return {
         ...state,
         cart: decNewvalue,
         amount: decTotalAmountValue,
         cartValue: decreaseCart,
+      };
+
+    case "SERACH_PRODUCT":
+      let newSearchCart = [];
+
+      state.productList.filter((item) => {
+        if (item.product.includes(action.data)) {
+          newSearchCart.push(item);
+        }
+        return newSearchCart;
+      });
+
+      console.log("newSearchCart", newSearchCart);
+
+      if (action.data.length === 0) {
+        newSearchCart = state.serachProduct;
+      }
+      return {
+        ...state,
+        productList: newSearchCart,
       };
     default:
       return state;

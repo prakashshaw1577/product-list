@@ -32,3 +32,10 @@ export const decrementCartValue = (data) => {
     data,
   };
 };
+
+export const searchProduct = (data) => {
+  return {
+    type: "SERACH_PRODUCT",
+    data,
+  };
+};

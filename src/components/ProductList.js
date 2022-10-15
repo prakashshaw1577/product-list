@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeProduct, addToCart } from "../redux/actions/Index";
 import { searchProduct } from "../redux/actions/Index";
@@ -47,7 +47,8 @@ const ProductList = () => {
                         id: data.id,
                         name: data.name,
                         product: data.product,
-                        price: data.price,
+                        price: parseInt(data.price),
+                        defaultPrice: parseInt(data.price),
                       };
                       dispatch(addToCart(cartdata));
                     }}
